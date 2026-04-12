@@ -3,8 +3,6 @@ try:
     from tkinter import messagebox as mb, filedialog as fdl, ttk
     import os
     import zipfile
-    import urllib.request
-    import urllib.error
     import sys
 except ImportError:
     print("error")
@@ -29,6 +27,7 @@ Toolroot.iconbitmap(resource_path("ICO.ico"))
 Toolroot.update()
 Toolroot.config(bg="#000000")
 Toolroot.columnconfigure(1, weight=1)
+Toolroot.columnconfigure(2, weight=2)
 GameDir, LanguageSettings_2_Path, LanguageDir, ModDir = "", "", "", ""
 Font = ("黑体", 14)
 bg = "#202020"
@@ -51,18 +50,9 @@ Buttons = [
     "点击选择游戏根目录",
     "安装MOD",
     "一键汉化",
-    "应用选择"
+    "应用选择",
+    "关于"
 ]
-
-# 定义下载
-def DownloadMOD(text):
-    try:
-        urllib.request.urlretrieve(MODurl, os.path.join(os.path.dirname(os.path.abspath(__file__)), "SFS_HAN_MODv5.1.0.zip"))
-        text.config(text="下载完成", fg=green_fg)
-    except urllib.error.URLError:
-        text.config(text="下载失败（网络）", fg=red_fg)
-    except Exception:
-        text.config(text="下载失败（其他）", fg=red_fg)
                 
 # 定义寻找自定义文件
 def FoundTextFile():
@@ -75,17 +65,11 @@ def FoundTextFile():
 # 安装MOD
 def StepMOD(Button, text):
     if not os.path.exists(ModDir):
-        os.makedirs(ModDir)
-    try:    
-        with zipfile.ZipFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "SFS_HAN_MODv5.1.0.zip"), "r") as zip:
-            zip.extractall(ModDir)
-            Button.destroy()
-            text.config(text=Texts[4], fg=green_fg)
-    except FileNotFoundError:
-        mb.showerror("错误", "MOD已丢失")
-        result = mb.askyesno("提示", "是否尝试重新下载MOD？")
-        if result:
-            DownloadMOD(text)
+        os.makedirs(ModDir)    
+    with zipfile.ZipFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "SFS_HAN_MODv5.1.0.zip"), "r") as zip:
+        zip.extractall(ModDir)
+        Button.destroy()
+        text.config(text=Texts[4], fg=green_fg)
 
 # 获取用户选择的自定义文件
 def GetFile(Frame, Combobox):
@@ -181,12 +165,19 @@ def SeletGameDir():
         else:
             Text.config(text=Texts[1], fg=red_fg)
 
+def R():
+    yesorno = mb.askyesno("声明", "本项目由（bilibili用户名）：\n冰红肠大王（字体修复MOD开发）\n我没有油了（程序界面开发）\n\n是否打开本项目网页")
+    if yesorno:
+        os.startfile("https://github.com/Dere3046/SFS_Chinese")
+
 Frame = tk.Frame(Toolroot, borderwidth=1, relief=tk.RAISED, bg=bg)
 Frame.grid(row=0,column=1, sticky="w", ipadx=5, ipady=5, padx=10, pady=10)
 Text = tk.Label(Frame, bg=bg, font=Font, text=Texts[0], fg=fg)
 Button = tk.Button(Frame, bg=bg, font=Font, text=Buttons[0], fg=fg, command=SeletGameDir)
+Buttonabo = tk.Button(Toolroot, bg=bg, font=Font, text=Buttons[4], fg=fg, command=R)
 Text.grid(row=0, column=0)
 Button.grid(row=1, column=0)
+Buttonabo.grid(row=2, column=0, pady=(10, 0), padx=20)
 Elements.append(Text)
 Elements.append(Button)
 
