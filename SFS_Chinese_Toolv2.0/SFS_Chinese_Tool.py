@@ -5,8 +5,19 @@ try:
     import zipfile
     import urllib.request
     import urllib.error
+    import sys
 except ImportError:
     print("error")
+
+def resource_path(relative_path):
+    """ 获取资源绝对路径，用于处理 PyInstaller 打包后的路径问题 """
+    if hasattr(sys, '_MEIPASS'):
+        # PyInstaller 打包后的临时目录
+        base_path = sys._MEIPASS
+    else:
+        # 正常运行时的目录
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 # 初始化
 Toolroot = tk.Tk()
@@ -14,6 +25,8 @@ Toolroot.title("SFS文本编辑工具")
 Toolroot.geometry("600x300")
 Toolroot.maxsize(600, 300)
 Toolroot.minsize(600, 300)
+Toolroot.iconbitmap(resource_path("ICO.ico"))
+Toolroot.update()
 Toolroot.config(bg="#101010")
 Toolroot.columnconfigure(1, weight=1)
 GameDir, LanguageSettings_2_Path, LanguageDir, ModDir = "", "", "", ""
@@ -90,6 +103,8 @@ def GetFile(Frame, Combobox):
             f.writelines(" \"custom\": true")
             f.writelines("}")
 
+
+
 # 定义一键汉化
 def Chines():
     with open(LanguageSettings_2_Path, "w", encoding="utf-8") as f:
@@ -98,7 +113,7 @@ def Chines():
         f.writelines(" \"custom\": true")
         f.writelines("}")
     try:    
-        with zipfile.ZipFile("SFS_Chinese.zip", "r") as zf:
+        with zipfile.ZipFile(resource_path("SFS_Chinese.zip"), "r") as zf:
             zf.extractall(LanguageDir)
             mb.showinfo("提示", "成功汉化")
     except FileNotFoundError:
