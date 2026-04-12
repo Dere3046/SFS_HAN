@@ -11,18 +11,18 @@ except ImportError:
 # 初始化
 Toolroot = tk.Tk()
 Toolroot.title("SFS文本编辑工具")
-Toolroot.geometry("800x500")
-Toolroot.maxsize(800, 500)
-Toolroot.minsize(700, 400)
+Toolroot.geometry("600x300")
+Toolroot.maxsize(600, 300)
+Toolroot.minsize(600, 300)
 Toolroot.config(bg="#101010")
 Toolroot.columnconfigure(1, weight=1)
-GameDir, LanguageSettings_2_Path, LanguageDir, ModDir = ""
+GameDir, LanguageSettings_2_Path, LanguageDir, ModDir = "", "", "", ""
 Font = ("黑体", 14)
 bg = "#2F2F2F"
 green_fg = "green"
 red_fg = "red"
 fg = "white"
-MODurl = "https://release-assets.githubusercontent.com/github-production-release-asset/1207327489/9b2d605f-51ed-4c55-9b23-57e3bd2840c7?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-12T02%3A53%3A03Z&rscd=attachment%3B+filename%3DSFS_HAN_MODv5.1.0.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-12T01%3A52%3A59Z&ske=2026-04-12T02%3A53%3A03Z&sks=b&skv=2018-11-09&sig=20woqBqhIiS8giMhN0rHMolCh%2BxIL%2BHGbGS8hlV2SXY%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NTk1OTg0NywibmJmIjoxNzc1OTU5NTQ3LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.8cK3N6IfeOxcb0p_gDrWno0uYyO0IObpMXKvSGZ7zcE&response-content-disposition=attachment%3B%20filename%3DSFS_HAN_MODv5.1.0.zip&response-content-type=application%2Foctet-stream"
+MODurl = "https://release-assets.githubusercontent.com/github-production-release-asset/1207327489/9b2d605f-51ed-4c55-9b23-57e3bd2840c7?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-12T02%3A53%3A03Z&rscd=attachment%3B+filename%3DSFS_HAN_MODv5.1.0.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-12T01%3A52%3A59Z&ske=2026-04-12T02%3A53%3A03Z&sks=b&skv=2018-11-09&sig=20woqBqhIiS8giMhN0rHMolCh%2BxIL%2BHGbGS8hlV2SXY%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHViLmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3NzU5NTk4NDcsIm5iZiI6MTc3NTk1OTU0NywicGF0aCI6InJlbGVhc2Vhc3NldHByb2R1Y3Rpb24uYmxvYi5jb3JlLndpbmRvd3MubmV0In0.8cK3N6IfeOxcb0p_gDrWno0uYyO0IObpMXKvSGZ7zcE&response-content-disposition=attachment%3B%20filename%3DSFS_HAN_MODv5.1.0.zip&response-content-type=application%2Foctet-stream"
 Elements = []
 Texts = [
     "1.选择游戏根目录(否则软件无法使用)",
@@ -37,7 +37,8 @@ Texts = [
 Buttons = [
     "点击选择游戏根目录",
     "安装MOD",
-    "一键汉化"
+    "一键汉化",
+    "应用选择"
 ]
 
 # 定义下载
@@ -53,7 +54,8 @@ def DownloadMOD(text):
 # 定义寻找自定义文件
 def FoundTextFile():
     File = os.listdir(LanguageDir)
-    File.remove("Example.txt")
+    if "Example.txt" in File:
+        File.remove("Example.txt")
     File.append("请选择")
     return File
 
@@ -68,7 +70,7 @@ def StepMOD(Button, text):
             text.config(text=Texts[4], fg=green_fg)
     except FileNotFoundError:
         mb.showerror("错误", "MOD已丢失")
-        result = mb.askyesno
+        result = mb.askyesno("提示", "是否尝试重新下载MOD？")
         if result:
             DownloadMOD(text)
 
@@ -101,6 +103,7 @@ def Chines():
             mb.showinfo("提示", "成功汉化")
     except FileNotFoundError:
         mb.showerror("错误", "未找到汉化文件")
+
 # 定义安装字体修复MOD的功能
 def ManageMOD():
     Frame1 = tk.Frame(Toolroot, bg=bg, relief=tk.RAISED, borderwidth=1)
@@ -130,11 +133,11 @@ def SetForLanguageSetting_2GUI():
     Combobox = ttk.Combobox(Frame2, values=File)
     Combobox.current(len(File) - 1)
     Button4 = tk.Button(Frame2, text=Buttons[3], font=Font, fg=fg, bg=bg, command=lambda:GetFile(Frame2, Combobox))
-    Frame2.grid(row=2, column=2, sticky="e", padx=40, pady=10, ipadx=(5, 5), ipady=(3, 3))
+    Frame2.grid(row=1, column=1, sticky="e", padx=40, pady=10, ipadx=5, ipady=3)
     Text3.grid(sticky="w", row=0, column=0, padx=5, pady=(3, 5))
     Button3.grid(sticky="w", row=1, column=0, padx=5, pady=(3, 5))
     Text4.grid(sticky="w", row=2, column=0, padx=5, pady=(6, 5))
-    Combobox(sticky="w", row=4, column=0, padx=5, pady=(3, 5))
+    Combobox.grid(sticky="w", row=4, column=0, padx=5, pady=(3, 5))
     Button4.grid(sticky="w", row=5, column=0, padx=5, pady=(3, 5))
     Elements.append(Frame2)
     Elements.append(Text4)
@@ -142,6 +145,7 @@ def SetForLanguageSetting_2GUI():
     Elements.append(Button3)
     Elements.append(Button4)
     Elements.append(Combobox)
+
 # 定义选择游戏目录指令
 def SeletGameDir():
     global GameDir, LanguageSettings_2_Path, LanguageDir, ModDir
@@ -158,6 +162,7 @@ def SeletGameDir():
             Text1.grid(row=0, column=0)
             Elements.append(Text1)
             ManageMOD()
+            SetForLanguageSetting_2GUI()
         else:
             Text.config(text=Texts[1], fg=red_fg)
 
