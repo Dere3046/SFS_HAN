@@ -168,7 +168,7 @@ def SeletGameDir():
     if path:
         if os.path.isfile(os.path.join(path, r"Spaceflight Simulator.exe")):
             GameDir = path
-            LanguageSettings_2_Path = os.path.join(GameDir, r"Saving\Settings\LangSettings_2.txt")
+            LanguageSettings_2_Path = os.path.join(GameDir, r"Saving\Settings\LanguageSettings_2.txt")
             LanguageDir = os.path.join(GameDir, r"Spaceflight Simulator_Data\Custom Translations")
             ModDir = os.path.join(GameDir, "Mods")
             for w in Elements:
