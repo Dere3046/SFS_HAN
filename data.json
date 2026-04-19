@@ -1,0 +1,30 @@
+{
+  "downloads": {
+    "tool": {
+      "name": "汉化工具",
+      "version": "v2.0 (Python)",
+      "url": "https://github.com/Dere3046/SFS_Chinese/releases/tag/SFSChineseToolv2.0",
+      "icon": "⚡"
+    },
+    "hanmod": {
+      "name": "HAN_MOD",
+      "version": "最新版",
+      "url": "https://github.com/Dere3046/SFS_Chinese/tree/main/SFS_HAN_MOD",
+      "icon": "🌐"
+    },
+    "source": {
+      "name": "源码包",
+      "version": "main",
+      "url": "https://github.com/Dere3046/SFS_Chinese/archive/refs/heads/main.zip",
+      "icon": "📦"
+    }
+  },
+  "community": {
+    "donate": "",
+    "join": "mailto:fine4trn@163.com"
+  },
+  "notes": {
+    "translation_status": "部分文字未使用翻译键（无法通过常规方式自定义翻译），汉化补全功能正在开发中",
+    "platform": "Windows Only"
+  }
+}
