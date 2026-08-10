@@ -16,7 +16,6 @@ main.title("SFS_Chinese_Tool v2.1")
 main.geometry("500x150")
 main.minsize(500, 150)
 main.maxsize(600, 200)
-main.iconify()
 F835QYDBTM = {"black": {"bg": "#555555","fg": "#ffffff","button_bg": "#004e8d"},"white": {"bg": "#ffffff","fg": "#000000","button_bg": "#004e8d"}}
 config = {"path": "","theme": "black"}
 def FSC84F9737():
